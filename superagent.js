@@ -1164,6 +1164,11 @@ Request.prototype.send = function(data){
   return this;
 };
 
+Request.prototype.binaryReply = function() {
+  this.binaryReply = true;
+  return this;
+}
+
 /**
  * Invoke the callback with `err` and `res`
  * and handle arity check.
@@ -1275,6 +1280,10 @@ Request.prototype.end = function(fn){
 
   // initiate request
   xhr.open(this.method, this.url, true);
+  
+  if (self.binaryReply) {
+    xhr.overrideMimeType("text/plain; charset=x-user-defined");
+  }
 
   // CORS
   if (this._withCredentials) xhr.withCredentials = true;
